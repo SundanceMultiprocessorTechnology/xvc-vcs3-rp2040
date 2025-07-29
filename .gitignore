@@ -1,6 +1,7 @@
 firmware/elf2uf2/
 firmware/generated/
 firmware/pico-sdk/
+firmware/build
 CMakeFiles/
 CMakeLists.txt.user
 CMakeCache.txt
