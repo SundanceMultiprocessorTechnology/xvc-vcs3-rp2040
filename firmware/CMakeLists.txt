@@ -39,3 +39,6 @@ target_link_libraries(xvcPico PRIVATE
 )
 
 pico_add_extra_outputs(xvcPico)
+
+# Set the clock speed to 200 MHz
+# add_compile_definitions(SYS_CLK_MHZ=200)
