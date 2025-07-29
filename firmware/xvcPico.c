@@ -12,11 +12,14 @@ void __time_critical_func(core1_entry)() {
   while (1) {
     if (tud_cdc_n_available(0)) {
       char buf[64];
-      uint32_t count = tud_cdc_n_read(0, buf, sizeof(buf));
-      tud_cdc_n_read_flush(0);
-      for (int i = 0; i < count; i++) {
-        uart_putc(UART_ID, buf[i]);
+      // Loop through the whole message until the buffer is empty- instead of clearing the remainder 
+      while(tud_cdc_n_available(0)) {
+        uint32_t count = tud_cdc_n_read(0, buf, sizeof(buf));
+        for (uint32_t i = 0; i < count; i++) {
+          uart_putc(UART_ID, buf[i]);
+        }
       }
+      tud_cdc_n_write_flush(0);
     }
 
     int i = 0;
