@@ -8,6 +8,8 @@
 #include "jtag.h"
 #include "axm.h"
 
+#define LED_BLINK_DELAY 500 // milliseconds
+
 void __time_critical_func(core1_entry)() {
   while (1) {
     if (tud_cdc_n_available(0)) {
@@ -125,12 +127,22 @@ int main() {
   gpio_put(PWD0_PIN, 0);
   gpio_put(PWD1_PIN, 0);
 
-  // LED config
+  // Non blocking LED blink setup
   gpio_init(LED_PIN);
   gpio_set_dir(LED_PIN, GPIO_OUT);
+  uint32_t last_blink = to_ms_since_boot(get_absolute_time());
+  bool led_on = false;
 
   multicore_launch_core1(core1_entry);
   while (1) {
+    // LED blinks while running this central loop
+    uint32_t now = to_ms_since_boot(get_absolute_time());
+    if (now - last_blink >= LED_BLINK_DELAY) {
+      led_on = !led_on;
+      gpio_put(LED_PIN, led_on);
+      last_blink = now;
+    }
+
     from_host_task();
     fetch_command();
     pmod_task();
