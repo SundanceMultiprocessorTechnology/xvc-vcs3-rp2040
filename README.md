@@ -1,5 +1,16 @@
 ## pico-xvc
 
+NOTES FOR FORK: 
+Build files are located in /firmware/build. 
+Building the project: cd /firmware/build && cmake .. && make
+ 
+RP2040 clock frequency can be modified in /firmware/CMakeLists.txt, in the line "# add_compile_definitions(SYS_CLK_MHZ=200)"
+ (uncomment for 200MHz, comment for the default of 125MHz).
+
+JTAG speed may be limited by jtag_delay, defined in /firmware/jtag.h. Decreasing below 5 may cause issues. 
+
+-----------------------------------------------------------------------------
+
 This project implements a Raspberry Pico based Xilinx Virtual Cable (XVC). It
 allows using Raspberry Pico as a JTAG adapter for programming Xilinx FPGAs.
 
