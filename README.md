@@ -11,6 +11,18 @@ JTAG speed may be limited by jtag_delay, defined in /firmware/jtag.h. Decreasing
 
 -----------------------------------------------------------------------------
 
+## Images of the RP2040 modules:
+
+![Board 50x30](./VCS3-RP2040_50x30.png)
+
+
+
+![Large Board](./VCS3-RP2040_Large.png)
+
+
+-----------------------------------------------------------------------------
+
+
 This project implements a Raspberry Pico based Xilinx Virtual Cable (XVC). It
 allows using Raspberry Pico as a JTAG adapter for programming Xilinx FPGAs.  
 
@@ -20,8 +32,6 @@ The firmware, software and key parts of the hardware design are derived from the
 
 A special shoutout goes to https://github.com/tom01h for crazily improving the
 performance of this project - thank you!
-
-The pinout is as follows (it maches the pin names of the target device's JTAG port, in other word - you DON'T need to swap TDI and TDO pins like you would do with the interfaces like SPI or UART):
 
 As the Raspberry Pico is a 3.3v device we have added level shifters to enable the JTAG signals to work at what ever value of JTAG_VREF is supplied by the target board.
 
