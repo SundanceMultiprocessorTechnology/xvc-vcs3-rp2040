@@ -12,14 +12,20 @@ JTAG speed may be limited by jtag_delay, defined in /firmware/jtag.h. Decreasing
 -----------------------------------------------------------------------------
 
 This project implements a Raspberry Pico based Xilinx Virtual Cable (XVC). It
-allows using Raspberry Pico as a JTAG adapter for programming Xilinx FPGAs.
+allows using Raspberry Pico as a JTAG adapter for programming Xilinx FPGAs.  
 
-It is derived from the excellent [pico-dirtyJtag](https://github.com/phdussud/pico-dirtyJtag/) project.
+We have designed our own board(s) based on the RP2040 chip to add extra functionality and to remove extra parts.
+
+The firmware, software and key parts of the hardware design are derived from the excellent [pico-dirtyJtag](https://github.com/phdussud/pico-dirtyJtag/) project.
 
 A special shoutout goes to https://github.com/tom01h for crazily improving the
 performance of this project - thank you!
 
 The pinout is as follows (it maches the pin names of the target device's JTAG port, in other word - you DON'T need to swap TDI and TDO pins like you would do with the interfaces like SPI or UART):
+
+As the Raspberry Pico is a 3.3v device we have added level shifters to enable the JTAG signals to work at what ever value of JTAG_VREF is supplied by the target board.
+
+From the RP2040 chip, the pin out for the JTAG signals are as below: 
 
 | Pin name | GPIO   |
 |:---------|:-------|
@@ -29,24 +35,23 @@ The pinout is as follows (it maches the pin names of the target device's JTAG po
 | TMS      | GPIO19 |
 | GND      | Pin 23 |
 
-Note: The Raspberry Pico is a 3.3v device. Ensure that the target device and
-the Pico are electrically compatible before connecting them.
+On the VCS3-RP2040-50x30 module, we have routed the signals to a 10 way 1.27mm pitch connector as used on the VCS3.  
 
-![Pinout image](./pinout.png)
+![Pinout image 50x30](./pinout_50x30.png)
 
-![Full Pinout](./raspberry-pi-pico-gpio-pinout-diagram.png)
+On the VCS3-RP2040 module, they are routed to both a 10 way 1.27mm connector and the standard 2mm 14 way.
+
+![Pinout image Large board](./pinout_Large_board.png)
+
+Full schematics for both versions can be found here:
+
+[VCS3-RP2040_50x30 Schematic](./VCS%20RP2040%20V3%20SMALL.pdf)
+
+[VCS3-RP2040_Large Board Schematic](./VCS-RP2040-Full_size_Schematics.pdf)
 
 ### Compatibility tests
 
-The project has been verified to be working with the following hardware and software combinations:
-
-
-| Programmer Board    | Firmware      | Target                                  | Software                    | Date        |
-|---------------------|---------------|-----------------------------------------|-----------------------------|-------------|
-| Raspberry Pi Pico   | xvc-pico      | EBAZ4205 'Development' FPGA Board       | Vivado 2021.1               | August 2021 |
-| Raspberry Pi Pico   | xvc-pico      | EBAZ4205 'Development' FPGA Board       | Vivado ML Standard 2023.1   | May 2023    |
-| Raspberry Pi Pico W | xvc-pico-wifi | Unknown                                 | Vivado v2023.1 (64-bit)     | April 2024  |
-| Raspberry Pi Pico   | xvc-pico      | Coolrunner II XC2C64A (Matrix Glitcher) | Xilinx ISE 14.7 (Linux x64) | August 2024 |
+The project has been verified to be working with the VCS3 from Sundance.
 
 
 ### Building pico-xvc (for Linux users)
@@ -179,12 +184,7 @@ seconds.
 
 ### USB UARTs
 
-Connect Pico's hardware UART pins to FPGA's UART.
-
-```
-#define UART_TX_PIN 0
-#define UART_RX_PIN 1
-```
+The UART has been connected to the Power / UART header as used on the VCS3.  
 
 Set UART of FPGA to 115200 baud rate.
 
@@ -194,6 +194,7 @@ Note: /dev/ttyACM(n) will appear when Pico's USB is connected.
 ### Related Ideas / Projects
 
 - https://github.com/kholia/xvcpi
+- https://github.com/kholia/xvc-pico
 - https://github.com/kholia/xvc-esp32
 - https://github.com/kholia/xvc-esp8266
 - https://github.com/phdussud/pico-dirtyJtag/
