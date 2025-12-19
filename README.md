@@ -1,4 +1,4 @@
-## pico-xvc
+## xvc-vcs3-rp2040
 
 NOTES FOR FORK: 
 Build files are located in /firmware/build. 
@@ -184,11 +184,14 @@ seconds.
 
 ### USB UARTs
 
-The UART has been connected to the Power / UART header as used on the VCS3.  
+The UART has been connected to the Power / UART header as used on the VCS3.  We have also added a level shifter to ensure that the target board shouldn't be powered over UART.  
 
 Set UART of FPGA to 115200 baud rate.
 
 Note: /dev/ttyACM(n) will appear when Pico's USB is connected.
+
+For the "Large Board" verison there is a modificaion required to ensure that it works properly.  This is documented in the PDF:
+[Mod Doc for VCS3-RP2040 Large board](./VCS3-RP2040-V2_UART_TX_Buffer_mod.pdf)
 
 
 ### Related Ideas / Projects
